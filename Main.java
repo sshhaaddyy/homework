@@ -24,37 +24,41 @@ public class Main {
                     while (true) {
                         System.out.print("Please enter the crypto currency name: ");
                         name = scanner.nextLine().trim();
-                        if (!name.isEmpty()) {
+                        try {
+                            TransactionValidator.validateCryptoCurrencyName(name);
                             break;
+                        } catch (IllegalArgumentException e) {
+                            System.out.println(e.getMessage());
                         }
-                        System.out.println("Name cannot be empty. Please try again.");
                     }
 
                     double exchangeRate;
                     while (true) {
                         System.out.print("Please enter the exchange rate: ");
+                        String input = scanner.nextLine();
                         try {
-                            exchangeRate = Double.parseDouble(scanner.nextLine());
-                            if (exchangeRate > 0) {
-                                break;
-                            }
-                            System.out.println("Exchange rate must be greater than 0. Please try again.");
+                            exchangeRate = Double.parseDouble(input);
+                            TransactionValidator.validateExchangeRate(exchangeRate);
+                            break;
                         } catch (NumberFormatException e) {
                             System.out.println("Invalid number. Please try again.");
+                        } catch (IllegalArgumentException e) {
+                            System.out.println(e.getMessage());
                         }
                     }
 
                     double quantity;
                     while (true) {
                         System.out.print("Please enter the quantity: ");
+                        String input = scanner.nextLine();
                         try {
-                            quantity = Double.parseDouble(scanner.nextLine());
-                            if (quantity > 0) {
-                                break;
-                            }
-                            System.out.println("Quantity must be greater than 0. Please try again.");
+                            quantity = Double.parseDouble(input);
+                            TransactionValidator.validateQuantity(quantity);
+                            break;
                         } catch (NumberFormatException e) {
                             System.out.println("Invalid number. Please try again.");
+                        } catch (IllegalArgumentException e) {
+                            System.out.println(e.getMessage());
                         }
                     }
 
@@ -62,11 +66,12 @@ public class Main {
                     while (true) {
                         System.out.print("Please enter the transaction type (Debit/Credit): ");
                         String typeInput = scanner.nextLine().trim();
-                        type = new TransactionType(typeInput);
-                        if (type.getType() != 3) {
+                        try {
+                            type = TransactionType.fromString(typeInput);
                             break;
+                        } catch (IllegalArgumentException e) {
+                            System.out.println(e.getMessage());
                         }
-                        System.out.println("Invalid transaction type. Please enter 'Debit' or 'Credit'.");
                     }
 
                     Transaction transaction = new Transaction(name, exchangeRate, quantity, type);
@@ -83,14 +88,14 @@ public class Main {
                     double totalDebit = 0.0;
                     double totalCredit = 0.0;
                     for (Transaction t : transactionList) {
-                        if (t.getTransactionType().getType() == 1) {
+                        if (t.getTransactionType() == TransactionType.DEBIT) {
                             totalDebit += t.getQuantity() * t.getExchangeRate();
-                        } else if (t.getTransactionType().getType() == 2) {
+                        } else if (t.getTransactionType() == TransactionType.CREDIT) {
                             totalCredit += t.getQuantity() * t.getExchangeRate();
                         }
                     }
-                    System.out.printf("Total Debit: " + totalDebit);
-                    System.out.printf("Total Credit: " + totalCredit);
+                    System.out.printf("Total Debit: %.2f\n", totalDebit);
+                    System.out.printf("Total Credit: %.2f\n", totalCredit);
                     break;
 
                 case 3:

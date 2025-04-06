@@ -16,7 +16,7 @@ public class Transaction {
         this.date = LocalDate.now();
     }
 
-    public String getCryptoCurrenct() {
+    public String getCryptoCurrency() {
         return cryptoCurrency;
     }
 
@@ -33,10 +33,6 @@ public class Transaction {
     }
 
     public String toString() {
-        String stringType = "Credit";
-        if (this.type.getType() == 1) {
-            stringType = "Debit";
-        }
-        return "\nCryptoCurrency: " + this.cryptoCurrency + "\nExchange Rate: " + this.exchangeRate + "\nQuantity: " + this.quantity + "\nTransaction Type: " + stringType + "\nDate: " + this.date;
+        return "\nCryptoCurrency: " + cryptoCurrency + "\nExchange Rate: " + exchangeRate + "\nQuantity: " + quantity + "\nTransaction Type: " + type + "\nDate: " + date;
     }
 }

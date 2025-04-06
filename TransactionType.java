@@ -1,23 +1,19 @@
-public class TransactionType {
+public enum TransactionType {
+    DEBIT,
+    CREDIT;
 
-    private String type;
-
-    public TransactionType(String type) {
-        if (type.equalsIgnoreCase("debit")) {
-            this.type = "Debit";
-        } else if (type.equalsIgnoreCase("credit")) {
-            this.type = "Credit";
+    public static TransactionType fromString(String typeStr) {
+        if (typeStr.equalsIgnoreCase("debit")) {
+            return DEBIT;
+        } else if (typeStr.equalsIgnoreCase("credit")) {
+            return CREDIT;
         } else {
-            this.type = "Bad type";
+            throw new IllegalArgumentException("Invalid transaction type. Please enter 'Debit' or 'Credit'.");
         }
     }
 
-    public int getType() {
-        if (this.type.equalsIgnoreCase("debit")) {
-            return 1;
-        } else if (this.type.equalsIgnoreCase("credit")) {
-            return 2;
-        }
-        return 3;
+    @Override
+    public String toString() {
+        return name().charAt(0) + name().substring(1).toLowerCase();
     }
 }
